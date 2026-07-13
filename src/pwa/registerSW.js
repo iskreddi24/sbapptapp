@@ -1,9 +1,33 @@
+// export function registerSW() {
+//   if ('serviceWorker' in navigator) {
+//     window.addEventListener('load', async () => {
+//       try {
+//         const registration = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+//         setInterval(() => registration.update(), 60 * 60 * 1000);
+//         registration.addEventListener('updatefound', () => {
+//           const newWorker = registration.installing;
+//           if (newWorker) {
+//             newWorker.addEventListener('statechange', () => {
+//               if (newWorker.state === 'activated') {
+//                 window.dispatchEvent(new CustomEvent('sw-updated'));
+//               }
+//             });
+//           }
+//         });
+//         console.log('SW registered:', registration.scope);
+//       } catch (error) {
+//         console.error('SW registration failed:', error);
+//       }
+//     });
+//   }
+// }
 export function registerSW() {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
       try {
         const registration = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
         setInterval(() => registration.update(), 60 * 60 * 1000);
+
         registration.addEventListener('updatefound', () => {
           const newWorker = registration.installing;
           if (newWorker) {
@@ -14,10 +38,20 @@ export function registerSW() {
             });
           }
         });
+
         console.log('SW registered:', registration.scope);
       } catch (error) {
         console.error('SW registration failed:', error);
       }
+    });
+
+    // NEW: force a reload the moment a new SW takes control,
+    // so installed mobile PWAs can never keep running stale JS
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (refreshing) return;
+      refreshing = true;
+      window.location.reload();
     });
   }
 }
