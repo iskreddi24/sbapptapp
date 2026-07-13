@@ -65,6 +65,13 @@
   .mobile-filter-chips { display: block; }
 }
 .mobile-filter-chips {
+  display: none;
+  overflow-x: auto;
+  padding: 10px 16px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  -webkit-overflow-scrolling: touch;
   width: 100%;
   min-width: 0;
+  flex-shrink: 0;
 }
