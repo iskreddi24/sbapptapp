@@ -59,7 +59,10 @@
 
 .filter-chip:hover { background: #e2e8f0; }
 .filter-chip.active { background: #eff6ff; border-color: var(--color-primary); color: var(--color-primary); font-weight: 600; }
-
+.mobile-filter-chips {
+  width: 100%;
+  min-width: 0;
+}
 @media (max-width: 768px) {
   .sidebar { display: none; }
   .mobile-filter-chips { display: block; }
